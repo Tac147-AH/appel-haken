@@ -17,61 +17,111 @@
     nav.classList.toggle('scrolled', window.scrollY > 20);
   }, { passive: true });
 
-  // --- Floating CTA ---
+  // --- Header height -> --header-h (anchor offset and mobile menu position) ---
+  var root = document.documentElement;
+  function syncHeaderHeight() {
+    root.style.setProperty('--header-h', Math.ceil(nav.getBoundingClientRect().height) + 'px');
+  }
+  syncHeaderHeight();
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(syncHeaderHeight).observe(nav);
+  } else {
+    window.addEventListener('resize', syncHeaderHeight);
+    window.addEventListener('load', syncHeaderHeight);
+  }
+
+  // --- Floating CTA: shown once the hero has left the viewport, hidden while the contact section is in view ---
   var floatCta = document.getElementById('floatCta');
   var hero = document.getElementById('heroSection');
   var diagSection = document.getElementById('contact');
+  var heroInView = true;
+  var contactInView = false;
   var floatObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
-      if (e.target === hero) {
-        if (!e.isIntersecting) {
-          // Check if contact section is visible
-          var dRect = diagSection.getBoundingClientRect();
-          var diagVisible = dRect.top < window.innerHeight && dRect.bottom > 0;
-          floatCta.classList.toggle('show', !diagVisible);
-        } else {
-          floatCta.classList.remove('show');
-        }
-      }
+      if (e.target === hero) heroInView = e.isIntersecting;
+      else if (e.target === diagSection) contactInView = e.isIntersecting;
     });
+    var show = !heroInView && !contactInView;
+    floatCta.classList.toggle('show', show);
+    floatCta.inert = !show || menuOpen; // not focusable, clickable or announced once hiding starts (the fade-out still plays)
   }, { threshold: 0 });
   floatObs.observe(hero);
-
-  // Hide float CTA when contact section is visible
-  var diagObs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) floatCta.classList.remove('show');
-      else if (!hero.getBoundingClientRect().bottom > 0) floatCta.classList.add('show');
-    });
-  }, { threshold: 0.1 });
-  diagObs.observe(diagSection);
+  floatObs.observe(diagSection);
 
   // --- Mobile menu ---
   var hamburger = document.getElementById('hamburger');
   var mobileMenu = document.getElementById('mobileMenu');
   var overlay = document.getElementById('mobileOverlay');
+  var mobileQuery = window.matchMedia('(max-width: 768px)');
+  var menuOpen = false;
+  var hideTimer = null;
 
-  function toggleMenu() {
-    var open = mobileMenu.classList.toggle('open');
-    hamburger.classList.toggle('open', open);
-    overlay.style.display = open ? 'block' : 'none';
-    requestAnimationFrame(function() {
-      overlay.classList.toggle('open', open);
+  // While the menu is open, everything outside the header and the menu is inert
+  function setBackgroundInert(state) {
+    Array.prototype.forEach.call(document.body.children, function(el) {
+      if (el === nav || el === mobileMenu || el === overlay || el.tagName === 'SCRIPT') return;
+      el.inert = state || (el === floatCta && !floatCta.classList.contains('show'));
     });
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-  function closeMenu() {
-    mobileMenu.classList.remove('open');
-    hamburger.classList.remove('open');
-    overlay.classList.remove('open');
-    setTimeout(function() { overlay.style.display = 'none'; }, 300);
-    document.body.style.overflow = '';
   }
 
-  hamburger.addEventListener('click', toggleMenu);
-  overlay.addEventListener('click', closeMenu);
-  mobileMenu.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('click', closeMenu);
+  function openMenu() {
+    if (menuOpen) return;
+    menuOpen = true;
+    clearTimeout(hideTimer);
+    mobileMenu.hidden = false;
+    overlay.hidden = false;
+    mobileMenu.inert = false;
+    void mobileMenu.offsetWidth; // start from the closed position so the slide-in transition runs
+    mobileMenu.classList.add('open');
+    overlay.classList.add('open');
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    setBackgroundInert(true);
+    document.body.style.overflow = 'hidden';
+    var firstLink = mobileMenu.querySelector('a');
+    if (firstLink) firstLink.focus({ preventScroll: true });
+  }
+
+  function closeMenu(returnFocus) {
+    if (!menuOpen) return;
+    menuOpen = false;
+    mobileMenu.classList.remove('open');
+    overlay.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.inert = true; // unreachable immediately; fully hidden once the slide-out finishes
+    setBackgroundInert(false);
+    document.body.style.overflow = '';
+    if (returnFocus) hamburger.focus();
+    var duration = parseFloat(getComputedStyle(mobileMenu).transitionDuration) || 0;
+    hideTimer = setTimeout(function() {
+      mobileMenu.hidden = true;
+      overlay.hidden = true;
+    }, duration * 1000);
+  }
+
+  hamburger.addEventListener('click', function() {
+    if (menuOpen) closeMenu(true);
+    else openMenu();
   });
+  overlay.addEventListener('click', function() { closeMenu(true); });
+  // The header logo (home link) stays reachable while the menu is open; activating it closes the menu and keeps focus on the logo
+  nav.querySelector('.nav-logo').addEventListener('click', function() { closeMenu(false); });
+  mobileMenu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      // In-page links let the browser move focus to the chosen section; other links return focus to the menu button
+      closeMenu(a.getAttribute('href').charAt(0) !== '#');
+    });
+  });
+  document.addEventListener('keydown', function(e) {
+    if (menuOpen && (e.key === 'Escape' || e.key === 'Esc')) closeMenu(true);
+  });
+
+  // Leaving the mobile breakpoint (resize or rotation) while the menu is open resets the navigation
+  function onBreakpointChange(e) {
+    if (!e.matches) closeMenu(false);
+  }
+  if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', onBreakpointChange);
+  else if (mobileQuery.addListener) mobileQuery.addListener(onBreakpointChange);
 
 })();

@@ -7,26 +7,31 @@
   --charcoal: #2C2C2C;
   --warm-gray: #4A4A4A;
   --medium-gray: #6B6B6B;
-  --steel: #8A8580;
+  --steel: #6F6A65;
   --light-gray: #E8E5E0;
   --off-white: #F7F5F2;
   --cream: #FDFCFA;
-  --accent: #8B7355;
+  --accent: #7A6449;
   --accent-light: #A6916F;
   --red-flag: #C4493C;
-  --green-proof: #4A7C59;
+  --red-flag-on-dark: #CB5F53;
+  --green-proof: #487957;
+  --green-proof-on-dark: #508660;
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'DM Sans', -apple-system, sans-serif;
   --mono: 'JetBrains Mono', monospace;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Fixed-header height, used for anchor offsets and the mobile menu position.
+     js/main.js keeps it equal to the rendered <nav> height; this value is the no-JS fallback. */
+  --header-h: 8.5rem;
 }
 
 /* =============================================
    RESET & BASE
    ============================================= */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); font-size: 16px; }
 
 body {
   font-family: var(--sans);
@@ -88,6 +93,21 @@ body {
   flex-shrink: 0;
 }
 .check-icon { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* --- Skip link (off-screen until focused) --- */
+.skip-link {
+  position: fixed;
+  top: 0.75rem; left: 0.75rem;
+  z-index: 400;
+  padding: 0.75rem 1.25rem;
+  background: var(--charcoal);
+  color: var(--cream);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
 
 /* =============================================
    NAVIGATION
@@ -181,11 +201,12 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
 .mobile-menu {
   display: none;
   position: fixed;
-  top: 0; right: 0;
-  width: 280px; height: 100vh;
+  top: var(--header-h); right: 0; bottom: 0;
+  width: 280px;
+  overflow-y: auto;
   background: var(--cream);
-  z-index: 250;
-  padding: 5.5rem 2rem 2rem;
+  z-index: 190; /* below the fixed header (200) so the menu button stays usable */
+  padding: 2rem;
   transform: translateX(100%);
   transition: transform 0.4s var(--ease-out);
   box-shadow: -8px 0 40px rgba(0,0,0,0.08);
@@ -223,11 +244,13 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.3);
-  z-index: 240;
+  z-index: 180;
   opacity: 0;
   transition: opacity 0.3s;
 }
 .mobile-overlay.open { opacity: 1; }
+.mobile-menu[hidden],
+.mobile-overlay[hidden] { display: none; }
 
 /* =============================================
    FLOATING CTA (appears on scroll)
@@ -251,12 +274,14 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   opacity: 0;
   transform: translateY(16px);
   pointer-events: none;
+  visibility: hidden;
   transition: all 0.4s var(--ease-out);
 }
 .float-cta.show {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+  visibility: visible;
 }
 .float-cta:hover {
   background: var(--accent);
@@ -547,8 +572,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   font-family: var(--mono);
   font-size: 0.68rem;
   font-weight: 500;
-  color: var(--red-flag);
-  opacity: 0.65;
+  color: var(--red-flag-on-dark);
   flex-shrink: 0;
   margin-top: 3px;
 }
@@ -749,6 +773,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   gap: 0.5rem;
   background: var(--accent);
   color: var(--cream);
+  border: 1px solid var(--accent-light);
   padding: 0.75rem 1.75rem;
   text-decoration: none;
   font-size: 0.8rem;
@@ -760,6 +785,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
 }
 .mid-cta-btn:hover {
   background: var(--accent-light);
+  color: var(--ink);
   transform: translateY(-1px);
 }
 
@@ -808,14 +834,13 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--red-flag);
-  opacity: 0.65;
+  color: var(--red-flag-on-dark);
   margin-bottom: 0.75rem;
 }
 .why-them {
   font-size: 0.88rem;
   font-weight: 400;
-  color: #5A5752;
+  color: #8A8580;
   line-height: 1.6;
   margin-bottom: 2rem;
   padding-bottom: 2rem;
@@ -828,7 +853,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--green-proof);
+  color: var(--green-proof-on-dark);
   margin-bottom: 0.75rem;
 }
 .why-us {
@@ -850,6 +875,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
+  list-style: none; /* role="list" in the markup keeps the list semantics in Safari despite this */
 }
 .approach-step {
   padding: 2.5rem;
@@ -860,7 +886,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
   font-family: var(--serif);
   font-size: 3.5rem;
   font-weight: 300;
-  color: rgba(139,115,85,0.12);
+  color: #988368; /* 3.3:1 on --off-white */
   line-height: 1;
   margin-bottom: 0.75rem;
 }
@@ -1148,6 +1174,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
 }
 .diagnostic-cta:hover {
   background: var(--accent-light);
+  color: var(--ink);
   transform: translateY(-2px);
   box-shadow: 0 10px 36px rgba(139,115,85,0.3);
 }
@@ -1156,7 +1183,7 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
 .diagnostic-note {
   font-size: 0.73rem;
   font-weight: 400;
-  color: #5A5752;
+  color: #8A8580;
   margin-top: 1.25rem;
 }
 
@@ -1185,12 +1212,12 @@ footer {
   font-family: var(--serif);
   font-size: 0.8rem;
   font-style: italic;
-  color: #4A4540;
+  color: #8A8580;
   letter-spacing: 0.04em;
 }
 .footer-right {
   font-size: 0.68rem;
-  color: #3A3530;
+  color: #8A8580;
   letter-spacing: 0.02em;
 }
 
@@ -1221,10 +1248,10 @@ footer {
 }
 
 @media (max-width: 768px) {
-  .nav-links { display: none; }
+  .js .nav-links { display: none; }
   .support-proof-grid { grid-template-columns: 1fr; }
-  .hamburger { display: flex; }
-  .mobile-menu { display: block; }
+  .js .hamburger { display: flex; }
+  .mobile-menu, .mobile-overlay { display: block; }
   .services-grid { grid-template-columns: 1fr; }
   .approach-sequence { grid-template-columns: 1fr; }
   .approach-step { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.07); padding: 1.75rem 0; }
@@ -1264,5 +1291,26 @@ footer {
 
 @media (max-width: 768px) {
   .hero { padding-top: 8.75rem !important; }
+}
+
+/* Without JavaScript, small screens keep the header links instead of the menu button:
+   they wrap below the logo and the header scrolls with the page */
+@media (max-width: 768px) {
+  html:not(.js) { scroll-padding-top: 0; }
+  html:not(.js) nav { position: static; }
+  html:not(.js) .nav-inner { flex-wrap: wrap; }
+  html:not(.js) .nav-links { flex-wrap: wrap; gap: 0.75rem 1.5rem; padding-bottom: 0.9rem; }
+  html:not(.js) .hero { padding-top: 2.5rem !important; }
+}
+
+/* =============================================
+   REDUCED MOTION
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-credibility, .hero-tag, .hero h1, .hero-sub, .hero-urgency,
+  .hero-ctas, .hero-email-fallback, .hero-proof { animation: none; opacity: 1; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .float-cta, .mobile-menu, .mobile-overlay { transition: none; }
 }
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://appelhaken.com/sitemap.xml
