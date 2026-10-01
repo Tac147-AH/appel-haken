@@ -6,19 +6,23 @@
 <title>Appel Haken, LLC — Supply Chain & Operations Consulting</title>
 
 <!-- SEO -->
-<meta name="description" content="Appel Haken is a supply chain and operations consulting firm. We fix what's broken, accelerate results, and build operations the right way — from execution to AI-enabled systems.">
-<link rel="canonical" href="https://appelhaken.com">
+<meta name="description" content="Operator-led supply chain and operations consulting. Appel Haken fixes what&rsquo;s broken, accelerates results, and builds AI-enabled systems that hold up.">
+<link rel="canonical" href="https://appelhaken.com/">
 
-<!-- Favicon -->
-<link rel="icon" type="image/jpeg" href="assets/favicon.jpg">
+<!-- Favicons -->
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://appelhaken.com">
+<meta property="og:url" content="https://appelhaken.com/">
 <meta property="og:site_name" content="Appel Haken, LLC">
 <meta property="og:title" content="Appel Haken, LLC — Supply Chain & Operations Consulting">
 <meta property="og:description" content="We fix what's broken, accelerate results, and build operations the right way — from execution to AI-enabled systems.">
 <meta property="og:image" content="https://appelhaken.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Appel Haken, LLC — Supply Chain & Operations Consulting">
 <meta property="og:locale" content="en_US">
 
@@ -29,21 +33,49 @@
 <meta name="twitter:image" content="https://appelhaken.com/assets/og-image.jpg">
 <meta name="twitter:image:alt" content="Appel Haken, LLC — Supply Chain & Operations Consulting">
 
-<!-- JSON-LD: Organization -->
+<!-- JSON-LD: Organization, founder, website -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Appel Haken, LLC",
-  "url": "https://appelhaken.com",
-  "logo": "https://appelhaken.com/assets/logo.jpg",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "email": "contact@appelhaken.com",
-    "contactType": "customer service"
-  },
-  "sameAs": [
-    "https://www.linkedin.com/company/appelhaken/"
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://appelhaken.com/#organization",
+      "name": "Appel Haken, LLC",
+      "url": "https://appelhaken.com/",
+      "logo": "https://appelhaken.com/assets/logo.jpg",
+      "image": "https://appelhaken.com/assets/og-image.jpg",
+      "description": "Operator-led supply chain and operations consulting.",
+      "email": "contact@appelhaken.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "contact@appelhaken.com",
+        "contactType": "customer service"
+      },
+      "founder": { "@id": "https://appelhaken.com/#brian-diehl" },
+      "knowsAbout": ["Supply chain management", "Operations management", "Logistics network design", "Procurement", "Operational analytics"],
+      "sameAs": [
+        "https://www.linkedin.com/company/appelhaken"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://appelhaken.com/#brian-diehl",
+      "name": "Brian Diehl",
+      "jobTitle": "Principal",
+      "url": "https://appelhaken.com/#founder",
+      "worksFor": { "@id": "https://appelhaken.com/#organization" },
+      "sameAs": [
+        "https://www.linkedin.com/in/brianvdiehl"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://appelhaken.com/#website",
+      "url": "https://appelhaken.com/",
+      "name": "Appel Haken, LLC",
+      "publisher": { "@id": "https://appelhaken.com/#organization" }
+    }
   ]
 }
 </script>
@@ -60,8 +92,8 @@
 <!-- ===== NAV ===== -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="nav-logo">
-      <img style="height:60px;" src="assets/logo.jpg" alt="Appel Haken, LLC">
+    <a href="/" class="nav-logo">
+      <img style="height:60px;" src="assets/logo.jpg" alt="Appel Haken, LLC home">
     </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
