@@ -1,4 +1,20 @@
 (function() {
+  // --- Site config ---
+  var CONFIG = {
+    // Optional "Book 20 min" link next to the email fallback in #contact; leave empty to hide it.
+    // TODO: Brian — set to your scheduling URL (e.g. a Cal.com or Calendly 20-minute event).
+    calendarUrl: ''
+  };
+
+  // --- Analytics hook: forwards events to whichever cookieless provider is loaded (see README, "Analytics").
+  // A no-op until one is enabled. Events: "CTA Open" {location}, "Form Submit Success" {timing}.
+  function track(name, props) {
+    try {
+      if (typeof window.plausible === 'function') window.plausible(name, { props: props });
+      if (window.zaraz && typeof window.zaraz.track === 'function') window.zaraz.track(name, props);
+    } catch (err) { /* analytics must never break the page */ }
+  }
+
   // --- Scroll reveal (IntersectionObserver) ---
   const reveals = document.querySelectorAll('.reveal');
   const revealObs = new IntersectionObserver(function(entries) {
@@ -30,23 +46,40 @@
     window.addEventListener('load', syncHeaderHeight);
   }
 
-  // --- Floating CTA: shown once the hero has left the viewport, hidden while the contact section is in view ---
+  // --- Floating CTA (small screens; CSS keeps it display:none on desktop, where the header CTA is always visible) ---
+  // Shown once the hero has left the viewport and the reader scrolls back up; hidden while scrolling down
+  // (so it never sits over text being read) and while the contact section is in view.
   var floatCta = document.getElementById('floatCta');
   var hero = document.getElementById('heroSection');
   var diagSection = document.getElementById('contact');
   var heroInView = true;
   var contactInView = false;
+  var scrollingDown = false;
+  var lastScrollY = window.scrollY;
+  function updateFloatCta() {
+    var show = !heroInView && !contactInView && !scrollingDown;
+    floatCta.classList.toggle('show', show);
+    floatCta.inert = !show || menuOpen; // not focusable, clickable or announced once hiding starts (the fade-out still plays)
+  }
   var floatObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.target === hero) heroInView = e.isIntersecting;
       else if (e.target === diagSection) contactInView = e.isIntersecting;
     });
-    var show = !heroInView && !contactInView;
-    floatCta.classList.toggle('show', show);
-    floatCta.inert = !show || menuOpen; // not focusable, clickable or announced once hiding starts (the fade-out still plays)
+    updateFloatCta();
   }, { threshold: 0 });
   floatObs.observe(hero);
   floatObs.observe(diagSection);
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY;
+    if (Math.abs(y - lastScrollY) < 12) return; // ignore jitter and small momentum adjustments
+    var down = y > lastScrollY;
+    lastScrollY = y;
+    if (down !== scrollingDown) {
+      scrollingDown = down;
+      updateFloatCta();
+    }
+  }, { passive: true });
 
   // --- Mobile menu ---
   var hamburger = document.getElementById('hamburger');
@@ -123,5 +156,75 @@
   }
   if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', onBreakpointChange);
   else if (mobileQuery.addListener) mobileQuery.addListener(onBreakpointChange);
+
+  // --- Primary CTAs: the link scrolls to the form (#request); focus then moves to the form heading ---
+  var requestHeading = document.getElementById('requestHeading');
+  document.querySelectorAll('[data-cta]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      track('CTA Open', { location: a.getAttribute('data-cta') });
+      // Let the in-page navigation run first so focusing does not interrupt the smooth scroll
+      setTimeout(function() { requestHeading.focus({ preventScroll: true }); }, 0);
+    });
+  });
+
+  // --- Optional scheduling link ---
+  if (CONFIG.calendarUrl) {
+    document.getElementById('calendarLink').href = CONFIG.calendarUrl;
+    document.getElementById('calendarWrap').hidden = false;
+  }
+
+  // --- Contact form: submit in place; without JS the browser posts to the same endpoint ---
+  var form = document.getElementById('requestForm');
+  var formError = document.getElementById('requestError');
+  var formSuccess = document.getElementById('requestSuccess');
+  var submitBtn = form.querySelector('.request-submit');
+  var submitLabel = submitBtn.querySelector('.request-submit-label');
+  var submitText = submitLabel.textContent;
+  var sending = false;
+
+  function showFormError(message) {
+    formError.innerHTML = '';
+    formError.appendChild(document.createTextNode(message + ' You can also email '));
+    var link = document.createElement('a');
+    link.href = 'mailto:contact@appelhaken.com';
+    link.textContent = 'contact@appelhaken.com';
+    formError.appendChild(link);
+    formError.appendChild(document.createTextNode('.'));
+    formError.hidden = false;
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (sending) return;
+    sending = true;
+    formError.hidden = true;
+    submitBtn.disabled = true;
+    submitLabel.textContent = 'Sending…';
+
+    var data = {};
+    new FormData(form).forEach(function(value, key) { data[key] = value; });
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function(res) {
+      return res.json().catch(function() { return {}; }).then(function(body) {
+        if (!res.ok || !body.ok) throw { userMessage: body.error };
+      });
+    }).then(function() {
+      track('Form Submit Success', { timing: data.urgency || 'not-specified' });
+      form.hidden = true;
+      formSuccess.hidden = false;
+      formSuccess.focus();
+    }).catch(function(err) {
+      // Messages from the endpoint are written for people; network failures get the generic one
+      showFormError((err && err.userMessage) || 'That didn’t go through.');
+    }).then(function() {
+      sending = false;
+      submitBtn.disabled = false;
+      submitLabel.textContent = submitText;
+    });
+  });
 
 })();
