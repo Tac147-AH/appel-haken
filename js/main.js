@@ -1,4 +1,11 @@
 (function() {
+  // --- Site config ---
+  var CONFIG = {
+    // Optional "Book 20 min" link next to the email fallback in #contact; leave empty to hide it.
+    // TODO: Brian — set to your scheduling URL (e.g. a Cal.com or Calendly 20-minute event).
+    calendarUrl: ''
+  };
+
   // --- Scroll reveal (IntersectionObserver) ---
   const reveals = document.querySelectorAll('.reveal');
   const revealObs = new IntersectionObserver(function(entries) {
@@ -140,5 +147,73 @@
   }
   if (mobileQuery.addEventListener) mobileQuery.addEventListener('change', onBreakpointChange);
   else if (mobileQuery.addListener) mobileQuery.addListener(onBreakpointChange);
+
+  // --- Primary CTAs: the link scrolls to the form (#request); focus then moves to the form heading ---
+  var requestHeading = document.getElementById('requestHeading');
+  document.querySelectorAll('[data-cta]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      // Let the in-page navigation run first so focusing does not interrupt the smooth scroll
+      setTimeout(function() { requestHeading.focus({ preventScroll: true }); }, 0);
+    });
+  });
+
+  // --- Optional scheduling link ---
+  if (CONFIG.calendarUrl) {
+    document.getElementById('calendarLink').href = CONFIG.calendarUrl;
+    document.getElementById('calendarWrap').hidden = false;
+  }
+
+  // --- Contact form: submit in place; without JS the browser posts to the same endpoint ---
+  var form = document.getElementById('requestForm');
+  var formError = document.getElementById('requestError');
+  var formSuccess = document.getElementById('requestSuccess');
+  var submitBtn = form.querySelector('.request-submit');
+  var submitLabel = submitBtn.querySelector('.request-submit-label');
+  var submitText = submitLabel.textContent;
+  var sending = false;
+
+  function showFormError(message) {
+    formError.innerHTML = '';
+    formError.appendChild(document.createTextNode(message + ' You can also email '));
+    var link = document.createElement('a');
+    link.href = 'mailto:contact@appelhaken.com';
+    link.textContent = 'contact@appelhaken.com';
+    formError.appendChild(link);
+    formError.appendChild(document.createTextNode('.'));
+    formError.hidden = false;
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (sending) return;
+    sending = true;
+    formError.hidden = true;
+    submitBtn.disabled = true;
+    submitLabel.textContent = 'Sending…';
+
+    var data = {};
+    new FormData(form).forEach(function(value, key) { data[key] = value; });
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function(res) {
+      return res.json().catch(function() { return {}; }).then(function(body) {
+        if (!res.ok || !body.ok) throw { userMessage: body.error };
+      });
+    }).then(function() {
+      form.hidden = true;
+      formSuccess.hidden = false;
+      formSuccess.focus();
+    }).catch(function(err) {
+      // Messages from the endpoint are written for people; network failures get the generic one
+      showFormError((err && err.userMessage) || 'That didn’t go through.');
+    }).then(function() {
+      sending = false;
+      submitBtn.disabled = false;
+      submitLabel.textContent = submitText;
+    });
+  });
 
 })();
