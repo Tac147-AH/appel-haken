@@ -6,6 +6,15 @@
     calendarUrl: ''
   };
 
+  // --- Analytics hook: forwards events to whichever cookieless provider is loaded (see README, "Analytics").
+  // A no-op until one is enabled. Events: "CTA Open" {location}, "Form Submit Success" {timing}.
+  function track(name, props) {
+    try {
+      if (typeof window.plausible === 'function') window.plausible(name, { props: props });
+      if (window.zaraz && typeof window.zaraz.track === 'function') window.zaraz.track(name, props);
+    } catch (err) { /* analytics must never break the page */ }
+  }
+
   // --- Scroll reveal (IntersectionObserver) ---
   const reveals = document.querySelectorAll('.reveal');
   const revealObs = new IntersectionObserver(function(entries) {
@@ -152,6 +161,7 @@
   var requestHeading = document.getElementById('requestHeading');
   document.querySelectorAll('[data-cta]').forEach(function(a) {
     a.addEventListener('click', function() {
+      track('CTA Open', { location: a.getAttribute('data-cta') });
       // Let the in-page navigation run first so focusing does not interrupt the smooth scroll
       setTimeout(function() { requestHeading.focus({ preventScroll: true }); }, 0);
     });
@@ -203,6 +213,7 @@
         if (!res.ok || !body.ok) throw { userMessage: body.error };
       });
     }).then(function() {
+      track('Form Submit Success', { timing: data.urgency || 'not-specified' });
       form.hidden = true;
       formSuccess.hidden = false;
       formSuccess.focus();
