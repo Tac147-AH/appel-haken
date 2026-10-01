@@ -30,23 +30,40 @@
     window.addEventListener('load', syncHeaderHeight);
   }
 
-  // --- Floating CTA: shown once the hero has left the viewport, hidden while the contact section is in view ---
+  // --- Floating CTA (small screens; CSS keeps it display:none on desktop, where the header CTA is always visible) ---
+  // Shown once the hero has left the viewport and the reader scrolls back up; hidden while scrolling down
+  // (so it never sits over text being read) and while the contact section is in view.
   var floatCta = document.getElementById('floatCta');
   var hero = document.getElementById('heroSection');
   var diagSection = document.getElementById('contact');
   var heroInView = true;
   var contactInView = false;
+  var scrollingDown = false;
+  var lastScrollY = window.scrollY;
+  function updateFloatCta() {
+    var show = !heroInView && !contactInView && !scrollingDown;
+    floatCta.classList.toggle('show', show);
+    floatCta.inert = !show || menuOpen; // not focusable, clickable or announced once hiding starts (the fade-out still plays)
+  }
   var floatObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.target === hero) heroInView = e.isIntersecting;
       else if (e.target === diagSection) contactInView = e.isIntersecting;
     });
-    var show = !heroInView && !contactInView;
-    floatCta.classList.toggle('show', show);
-    floatCta.inert = !show || menuOpen; // not focusable, clickable or announced once hiding starts (the fade-out still plays)
+    updateFloatCta();
   }, { threshold: 0 });
   floatObs.observe(hero);
   floatObs.observe(diagSection);
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY;
+    if (Math.abs(y - lastScrollY) < 12) return; // ignore jitter and small momentum adjustments
+    var down = y > lastScrollY;
+    lastScrollY = y;
+    if (down !== scrollingDown) {
+      scrollingDown = down;
+      updateFloatCta();
+    }
+  }, { passive: true });
 
   // --- Mobile menu ---
   var hamburger = document.getElementById('hamburger');

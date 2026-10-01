@@ -253,12 +253,15 @@ nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
 .mobile-overlay[hidden] { display: none; }
 
 /* =============================================
-   FLOATING CTA (appears on scroll)
+   FLOATING CTA (small screens only, where the header CTA lives in the menu)
+   js/main.js shows it past the hero while scrolling up, and hides it
+   while scrolling down (reading) and while the contact section is in view
    ============================================= */
 .float-cta {
+  display: none;
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem));
+  right: max(1rem, calc(env(safe-area-inset-right) + 0.5rem));
   z-index: 150;
   background: var(--charcoal);
   color: var(--cream);
@@ -1268,7 +1271,7 @@ footer {
   .mid-cta-inner { flex-direction: column; gap: 1.25rem; }
   .footer-inner { flex-direction: column; gap: 1.25rem; text-align: center; }
   .footer-left { flex-direction: column; }
-  .float-cta { right: 1rem; bottom: 1.25rem; }
+  .js .float-cta { display: flex; }
 }
 
 @media (max-width: 520px) {
