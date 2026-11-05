@@ -1,0 +1,18 @@
+# Appel Haken, LLC
+
+Appel Haken is a hands-on supply chain and operations consulting firm. Companies bring us in when the operation is underperforming or when growth has outpaced the system it runs on. We work from the data, and we stay until the fix holds.
+
+## Services
+
+- [Hands-on execution and implementation](https://appelhaken.com/services/execution/): We build the tools and change the process ourselves. Then we stay until the result is real.
+- [Turnaround and stabilization](https://appelhaken.com/services/stabilization/): When service has broken down or a key customer is losing confidence, we find the root cause and get the operation back under control.
+- [Cost and performance](https://appelhaken.com/services/cost-performance/): We find what is actually driving cost and fix the structure behind it. A one-time squeeze does not last.
+- [Build and scale, from day 0](https://appelhaken.com/services/scale-build/): We design and stand up supply chains and operating models from the ground up. Growth breaks systems faster than most teams can redesign them.
+- [Decisions from operating data](https://appelhaken.com/services/operating-data/): We build tools that turn fragmented operational data into a view leadership can act on. AI is sometimes part of the build. It is not the offer.
+
+- [About Brian Diehl](https://appelhaken.com/about/)
+- [Frequently asked questions](https://appelhaken.com/faq/)
+
+If something is underperforming or needs to be built right from the start, write to contact@appelhaken.com. Tell us what is breaking.
+
+- [Contact Appel Haken](https://appelhaken.com/contact/): Serving clients across the US, remote.

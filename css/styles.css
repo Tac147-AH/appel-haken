@@ -1314,3 +1314,26 @@ footer {
   .float-cta, .mobile-menu, .mobile-overlay { transition: none; }
 }
 
+
+/* Shared layouts for the static content pages. */
+.todo { background: #fff0a8; color: var(--ink); padding: 0.1em 0.25em; overflow-wrap: anywhere; }
+.page-hero { min-height: auto; }
+.page-hero .hero-inner { grid-template-columns: 1fr; }
+.page-hero .hero-content { max-width: 960px; }
+.page-content { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+.page-content p, .copy-section p { margin-bottom: 1.25rem; }
+.page-content h2 { margin-top: 2.5rem; }
+.page-content ul, .page-content ol, .copy-section ol { padding-left: 1.5rem; margin: 1.5rem 0; }
+.page-content li, .copy-section li { margin-bottom: 0.85rem; }
+.page-content a, .copy-section a { color: inherit; text-underline-offset: 0.2em; }
+.copy-section > p, .copy-section > ol { max-width: 800px; }
+.faq-item { padding: 1.5rem 0; border-top: 1px solid var(--light-gray); }
+.faq-item h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; margin-bottom: 0.75rem; }
+.diagnostic .section-heading, .diagnostic .copy-section { color: var(--cream); }
+.copy-section .approach-sequence { padding-left: 0; }
+@media (min-width: 769px) { .copy-section .approach-sequence { grid-template-columns: repeat(4, 1fr); } }
+
+/* Shared footer links remain readable as the service list wraps. */
+.footer-links { max-width: 42rem; margin-bottom: 0.8rem; line-height: 1.8; }
+.footer-links a { color: inherit; }
+.footer-links ul { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; list-style: none; padding: 0; margin: 0.5rem 0 0; }

@@ -26,6 +26,21 @@
 </style>
 </head>
 <body>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img style="height:60px;" src="/assets/logo.jpg" alt="Appel Haken, LLC">
+    </a>
+    <ul class="nav-links"><li><a href="/">Home</a></li><li><a href="/services/">Services</a></li><li><a href="/about/">About</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/insights/">Insights</a></li><li><a href="/contact/" class="nav-cta">Contact</a></li></ul>
+    <button type="button" class="hamburger" id="hamburger" aria-label="Menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-overlay" id="mobileOverlay" hidden></div>
+<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Menu" hidden><a href="/">Home</a><a href="/services/">Services</a><a href="/about/">About</a><a href="/faq/">FAQ</a><a href="/insights/">Insights</a><a href="/contact/">Contact</a></div>
 <main class="not-found">
   <a href="/" class="not-found-logo"><img src="/assets/logo.jpg" alt="Appel Haken, LLC home"></a>
   <div class="section-tag">Error 404</div>
@@ -33,5 +48,17 @@
   <p class="not-found-body">The page you requested does not exist or may have moved.</p>
   <a href="/" class="cta-primary">Return to the homepage</a>
 </main>
-</body>
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <img src="/assets/logo.jpg" alt="Appel Haken, LLC" style="height:70px;">
+      <span class="footer-tagline">Simplify. Standardize. Automate.</span>
+    </div>
+    <div class="footer-right"><div class="footer-links"><a href="/contact/">Contact</a> · <a href="https://www.linkedin.com/company/appelhaken/">LinkedIn</a><ul><li><a href="/services/stabilization/">Turnaround and stabilization</a></li><li><a href="/services/cost-performance/">Cost and performance</a></li><li><a href="/services/scale-build/">Build and scale, from day 0</a></li><li><a href="/services/operating-data/">Decisions from operating data</a></li><li><a href="/services/execution/">Hands-on execution and implementation</a></li></ul></div>
+      <a href="mailto:contact@appelhaken.com" style="color:#8A8580;text-decoration:none;transition:color 0.2s;">contact@appelhaken.com</a>
+      <span style="margin:0 0.75rem;color:#3A3530;" aria-hidden="true">&middot;</span>
+      &copy; 2026 Appel Haken, LLC
+    </div>
+  </div>
+</footer><script src="/js/main.js"></script></body>
 </html>
