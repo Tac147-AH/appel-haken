@@ -1454,7 +1454,7 @@ footer {
   justify-content: center;
   align-items: flex-start;
 }
-.simple-page-logo img { display: block; height: 115px; width: auto; margin-bottom: 2.5rem; }
+.simple-page-logo img { display: block; height: 80px; width: auto; margin-bottom: 2.5rem; }
 .simple-page h2 {
   font-family: var(--serif);
   font-size: 1.4rem;
@@ -1603,3 +1603,119 @@ footer {
 .page-hero { padding-top: calc(var(--header-h, 96px) + 3rem); }
 /* Email CTA card in place of the contact form (form tabled, Nov 2026). */
 .request-mailto { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; width: 100%; text-decoration: none; margin-top: 1.5rem; }
+
+/* Contact page: the email card sits right under the introduction on every screen size. */
+.contact-page { padding-top: calc(var(--header-h, 96px) + 3rem); }
+.contact-grid { grid-template-areas: "copy card" "situations card"; align-items: start; }
+.contact-copy { grid-area: copy; }
+.contact-grid > .request { grid-area: card; }
+.contact-situations { grid-area: situations; }
+.contact-note { margin-top: 2rem; }
+@media (max-width: 1000px) {
+  .contact-grid { grid-template-areas: "copy" "card" "situations"; }
+}
+
+/* =============================================
+   REFINEMENTS, NOV 18 2026 (website review)
+   ============================================= */
+
+/* Logo: transparent, tightly cropped versions of the same mark */
+.nav-logo img { height: 72px !important; width: auto; }
+.footer-left img { height: 52px; width: auto; opacity: 1; }
+@media (max-width: 960px) { .nav-logo img { height: 54px !important; } }
+@media (max-width: 520px) { .nav-logo img { height: 46px !important; } }
+
+/* Switch to the menu button before the header links run out of room */
+@media (max-width: 960px) {
+  .js .nav-links { display: none; }
+  .js .hamburger { display: flex; }
+  .mobile-menu, .mobile-overlay { display: block; }
+}
+/* 44px touch target for the menu button */
+.hamburger { padding: 11px; margin-right: -11px; }
+/* Keep light text on charcoal in every state */
+.mobile-menu .mobile-cta:hover,
+.mobile-menu .mobile-cta:focus-visible { background: var(--ink) !important; color: var(--cream) !important; }
+
+/* Space under the fixed header follows its real height */
+.hero { padding-top: calc(var(--header-h, 96px) + 3.5rem); }
+@media (max-width: 768px) {
+  .hero { padding-top: calc(var(--header-h, 80px) + 2rem) !important; }
+}
+.page-hero { padding-top: calc(var(--header-h, 96px) + 2.5rem) !important; padding-bottom: 1.5rem; }
+.page-content { padding-top: 1.5rem; }
+.page-content > h2:first-child { margin-top: 0; }
+
+/* Legible labels: essential small text at 12px or more */
+.section-tag, .diagnostic-tag, .hero-tag { font-size: 0.72rem; }
+.hero-credibility { font-size: 0.68rem; }
+.hero-proof-label { font-size: 0.7rem; }
+.proof-chip, .proof-story dt, .case-eyebrow, .case-metric-label, .case-phase-tag, .founder-chips li { font-size: 0.75rem; }
+.proof-story dd, .hero-proof-desc { font-size: 0.875rem; }
+.footer-right, .footer-links { font-size: 0.8rem; }
+
+/* Homepage: one case before the first call to action */
+.hero-case {
+  border-left: 2px solid var(--accent);
+  padding: 0.2rem 0 0.2rem 1.25rem;
+  margin: -0.75rem 0 2.25rem;
+  max-width: 560px;
+}
+.hero-case-title {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
+}
+.hero-case p { font-size: 0.95rem; line-height: 1.65; color: var(--warm-gray); }
+
+/* Results: one featured case, then three supporting results linked to their services */
+.case-card-featured { margin-bottom: 0; }
+.case-card-featured .case-link { display: inline-block; margin: 0 2.75rem 2.25rem; }
+.case-link, .proof-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--charcoal);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-color: rgba(122,100,73,0.5);
+}
+.case-link:hover, .proof-link:hover { color: var(--accent); }
+.proof-link { display: inline-block; margin-top: 1.25rem; }
+.proof-grid-3 { grid-template-columns: repeat(3, 1fr); margin-top: 3rem; }
+@media (max-width: 1000px) {
+  .proof-grid-3 { grid-template-columns: 1fr; }
+  .proof-grid-3 .proof-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .proof-grid-3 .proof-item:last-child { border-bottom: none; }
+}
+@media (max-width: 520px) {
+  .case-card-featured .case-link { margin: 0 1.5rem 1.75rem; }
+}
+
+/* Services index: four routes as H2 cards, execution as the delivery method */
+.service-card h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; color: var(--ink); margin-bottom: 0.75rem; }
+.service-card h2 a { color: inherit; text-decoration: none; }
+.service-card h2 a:hover, .service-card h2 a:focus-visible { text-decoration: underline; text-underline-offset: 0.2em; }
+.services-execution { margin-top: 3.5rem; max-width: 760px; }
+.services-execution .section-heading { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 0.75rem; }
+.services-execution p { color: var(--warm-gray); line-height: 1.7; }
+.services-execution a { color: var(--ink); text-underline-offset: 0.2em; }
+
+/* One next step at the end of each service page and article */
+.page-next { border-top: 1px solid var(--light-gray); }
+.page-next .section-heading { font-size: 1.6rem; }
+.page-next-prompt { color: var(--warm-gray); }
+
+/* Insights */
+.insight-item { padding: 2rem 0; border-top: 1px solid var(--light-gray); }
+.insight-item:first-child { border-top: none; padding-top: 0.5rem; }
+.insight-title { font-family: var(--serif); font-size: 1.7rem; font-weight: 500; line-height: 1.25; margin: 0.6rem 0 0.6rem; }
+.insight-title a { color: var(--ink); text-decoration: none; }
+.insight-title a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.insight-item p { color: var(--warm-gray); }
+.hero-content .section-tag a { color: inherit; text-decoration: none; }
+.article-body { font-size: 1.05rem; line-height: 1.75; }
+.article-body h2 { margin-top: 2.75rem; margin-bottom: 1rem; }
+.article-body li { line-height: 1.65; }
