@@ -51,7 +51,6 @@ Whichever you enable, name it in the privacy notice when the form returns.
 Everything that needs a decision or approval is marked in the source; `grep -rn "TODO" *.html js` lists it all.
 
 - [ ] Founder headshot (replaces the "BD" monogram, `index.html` founder section)
-- [ ] Result cards: clients stay anonymous; still need the industry and stakes for the 12–37% card
 - [ ] Contact form: see "Contact form (tabled)" above
 - [ ] www → apex redirect rule (above)
 - [ ] Optional: calendar URL and analytics provider
