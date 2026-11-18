@@ -4,46 +4,21 @@ Static marketing site for Appel Haken, LLC, deployed on Cloudflare Pages from th
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | Homepage: hero, results, services, approach, case studies, founder, contact form |
-| `services/`, `about/`, `faq/`, `insights/`, `contact/` | Content pages (one `index.html` each); `contact/` carries the same form |
+| `index.html` | Homepage: hero, results, services, approach, case studies, founder, email CTA |
+| `services/`, `about/`, `faq/`, `insights/`, `contact/` | Content pages (one `index.html` each) |
 | `css/styles.css`, `js/main.js` | Shared styles and behaviour for every page |
-| `privacy/index.html` | `/privacy/` notice linked from the contact form (stub, `noindex` until reviewed) |
 | `llms.txt`, `sitemap.xml`, `robots.txt` | Search and AI-crawler metadata |
 | `scripts/validate_site.py` | Run `python3 scripts/validate_site.py` before pushing: checks links, titles, descriptions, canonicals, JSON-LD |
 | `404.html` | Served by Pages for unmatched paths |
-| `functions/api/contact.js` | Pages Function behind the contact form (`POST /api/contact`) |
-| `_routes.json` | Runs Functions only for `/api/*`; everything else stays static |
 | `favicon.ico`, `assets/` | Icons, logo, 1200×630 `og-image.jpg` |
 
-## Contact form
+## Contact form (tabled)
 
-On the homepage the primary CTAs scroll to the form in `#contact`; on every other page they go to `/contact/`, which has the same form. It posts to `/api/contact`, which validates the input, discards spam-trap hits, and emails the inquiry to the inbox through [Resend](https://resend.com). Reply-to is the sender, so you can reply straight from your inbox. If JavaScript is off, the browser posts the same form and gets a plain HTML confirmation page.
+The contact form is off for now; "Start the Conversation" goes to an email card (`#request`) on the homepage and `/contact/`.
 
-Until the variables below are set, the endpoint returns 503 and the form shows an error that points to contact@appelhaken.com.
+The full form is in commit `8cf0234` on `site-restore-v2`: markup in `index.html` and `contact/index.html`, `functions/api/contact.js` (Cloudflare Pages Function, sends through Resend), `_routes.json`, and `privacy/index.html`. `js/main.js` still handles the form if it is restored.
 
-### One-time setup
-
-1. In Resend, add the domain `appelhaken.com` and create the DNS records it lists in Cloudflare DNS. Resend sends from a `send.` subdomain, so existing email records such as SPF are not affected.
-2. Create a Resend API key with "Sending access" only.
-3. In Cloudflare, open **Workers & Pages → (this project) → Settings → Variables and Secrets** and add these for **Production** (and Preview if you want previews to send):
-
-| Name | Type | Value |
-| --- | --- | --- |
-| `RESEND_API_KEY` | **Secret** | The Resend API key |
-| `CONTACT_FROM` | Text | e.g. `Appel Haken Website <website@appelhaken.com>` (must be on the verified domain) |
-| `CONTACT_TO` | Text, optional | Inbox for inquiries; defaults to `contact@appelhaken.com` |
-
-4. Redeploy so the Function picks up the variables, then send a test inquiry from the live site.
-
-Never commit the API key. It belongs only in the Cloudflare dashboard (or in a local `.dev.vars` file, which is git-ignored).
-
-To run the site and Function locally: put the variables in `.dev.vars`, then run `npx wrangler pages dev .`.
-
-Spam protection is a hidden honeypot field. If spam gets through, add Cloudflare Turnstile: a widget in the form plus a check in `contact.js`.
-
-### Optional "Book 20 min" link
-
-Set `CONFIG.calendarUrl` at the top of `js/main.js` to a scheduling link. The link next to the email fallback stays hidden while that value is empty.
+Already done: appelhaken.com is verified in Resend, and `RESEND_API_KEY` and `CONTACT_FROM` are set for **Production** in Cloudflare. Still needed before restoring: the same two variables under **Preview** (so the branch preview can be tested), a decision on "We reply within one business day", and review of the privacy notice.
 
 ## www → apex redirect (still to do in Cloudflare)
 
@@ -69,15 +44,14 @@ It forwards them to Plausible or to Cloudflare Zaraz, whichever is loaded, and d
 - **Cloudflare Zaraz:** enable it for the zone. Events arrive through `zaraz.track()`; map them to a tool in the Zaraz dashboard.
 - Cloudflare Web Analytics can run alongside either for page views, but it does not record custom events.
 
-Whichever you enable, name it in `privacy/index.html`.
+Whichever you enable, name it in the privacy notice when the form returns.
 
 ## Waiting on Brian
 
 Everything that needs a decision or approval is marked in the source; `grep -rn "TODO" *.html js` lists it all.
 
-- [ ] Founder headshot (replaces the "BD" monogram), bio and credential chips (`index.html`, founder section)
-- [ ] Result cards: client names or more specific industries if any are publishable; the industry and stakes for the 12–37% card
-- [ ] Privacy notice: retention period and analytics provider, then remove `noindex` and add `/privacy/` to `sitemap.xml`
-- [ ] Resend and Cloudflare variables (above), then a live test submission
+- [ ] Founder headshot (replaces the "BD" monogram, `index.html` founder section)
+- [ ] Result cards: clients stay anonymous; still need the industry and stakes for the 12–37% card
+- [ ] Contact form: see "Contact form (tabled)" above
 - [ ] www → apex redirect rule (above)
 - [ ] Optional: calendar URL and analytics provider

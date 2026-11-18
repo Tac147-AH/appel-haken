@@ -1601,3 +1601,5 @@ footer {
 /* Inner pages: no decorative half-panel, and clear space under the fixed header. */
 .page-hero::before { display: none; }
 .page-hero { padding-top: calc(var(--header-h, 96px) + 3rem); }
+/* Email CTA card in place of the contact form (form tabled, Nov 2026). */
+.request-mailto { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; width: 100%; text-decoration: none; margin-top: 1.5rem; }
