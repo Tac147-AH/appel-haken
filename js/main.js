@@ -86,7 +86,7 @@
   var hamburger = document.getElementById('hamburger');
   var mobileMenu = document.getElementById('mobileMenu');
   var overlay = document.getElementById('mobileOverlay');
-  var mobileQuery = window.matchMedia('(max-width: 768px)');
+  var mobileQuery = window.matchMedia('(max-width: 960px)');
   var menuOpen = false;
   var hideTimer = null;
 

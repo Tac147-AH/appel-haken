@@ -1,18 +1,33 @@
 # Appel Haken, LLC
 
-Appel Haken is a hands-on supply chain and operations consulting firm. Companies bring us in when the operation is underperforming or when growth has outpaced the system it runs on. We work from the data, and we stay until the fix holds.
+Appel Haken is a hands-on supply chain and operations consulting firm founded in 2023 by Brian Diehl. Companies bring us in when the operation is underperforming or when growth has outpaced the system it runs on. We work from the data, build the fix, and stay through implementation until it holds. We serve clients across the U.S., remotely and on-site.
 
 ## Services
 
-- [Hands-on execution and implementation](https://appelhaken.com/services/execution/): We build the tools and change the process ourselves. Then we stay until the result is real.
 - [Turnaround and stabilization](https://appelhaken.com/services/stabilization/): When service has broken down or a key customer is losing confidence, we find the root cause and get the operation back under control.
 - [Cost and performance](https://appelhaken.com/services/cost-performance/): We find what is actually driving cost and fix the structure behind it. A one-time squeeze does not last.
-- [Build and scale, from day 0](https://appelhaken.com/services/scale-build/): We design and stand up supply chains and operating models from the ground up. Growth breaks systems faster than most teams can redesign them.
+- [Build and scale, from day 0](https://appelhaken.com/services/scale-build/): We design and stand up supply chains and operating models from the ground up.
 - [Decisions from operating data](https://appelhaken.com/services/operating-data/): We build tools that turn fragmented operational data into a view leadership can act on. AI is sometimes part of the build. It is not the offer.
 
-- [About Brian Diehl](https://appelhaken.com/about/)
+How we deliver all four: [hands-on execution and implementation](https://appelhaken.com/services/execution/). We build the tools and change the process ourselves, then stay until the result is real.
+
+## Selected results (clients anonymous)
+
+- $33.7M in equipment revenue enabled: an equipment manufacturer's critical customer, at risk over spare-parts backorders, ordered 20 machines after weekly backorder reviews, a joint forecast and shared reporting. Open order lines fell from more than 2,000 to under the 200 target.
+- 10–37% annualized spend reduction in selected categories across two clients: print media and MRO supplies at one; white glove, and cables and harnesses at the other.
+- $24.6M of spend from four contract manufacturers made comparable by part number (8,528 components, 70 bills of material), identifying $2.53M of renegotiation opportunity.
+- A cross-border direct-to-consumer delivery network built from scratch, from China and Europe into the U.S.
+
+## Founder
+
+- [About Brian Diehl](https://appelhaken.com/about/): Founder and Principal. Former Vice President at Pitney Bowes in procurement, global manufacturing and logistics, parcel operations, and final mile development; led an organization of about 1,200 people there.
+
+## Insights
+
+- [When a customer stops buying equipment, look at the parts backlog](https://appelhaken.com/insights/parts-backlog/)
+- [Your contract manufacturers are paying different prices for the same part](https://appelhaken.com/insights/price-paid-by-part-number/)
+
+## More
+
 - [Frequently asked questions](https://appelhaken.com/faq/)
-
-If something is underperforming or needs to be built right from the start, write to contact@appelhaken.com. Tell us what is breaking.
-
-- [Contact Appel Haken](https://appelhaken.com/contact/): Serving clients across the US, remote.
+- [Contact Appel Haken](https://appelhaken.com/contact/): Email contact@appelhaken.com with the operation under pressure, what is at stake and any deadline.
