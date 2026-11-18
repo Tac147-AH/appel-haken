@@ -16,3 +16,10 @@ desktop.ini
 node_modules/
 dist/
 .cache/
+
+# Cloudflare local dev (holds secrets)
+.dev.vars
+.wrangler/
+
+# Python
+__pycache__/
