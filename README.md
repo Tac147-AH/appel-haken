@@ -6,7 +6,7 @@ Static marketing site for Appel Haken, LLC, deployed on Cloudflare Pages from th
 | --- | --- |
 | `index.html` | Homepage: hero, results, services, approach, case studies, founder, email CTA |
 | `services/`, `about/`, `faq/`, `insights/`, `contact/` | Content pages (one `index.html` each) |
-| `css/styles.css`, `js/main.js` | Shared styles and behaviour for every page |
+| `css/styles.css`, `js/main.js` | Shared styles and behaviour for every page. Browsers cache them for up to 4 hours, so **bump the `?v=` value on every page's `<link>`/`<script>` tag whenever either file changes** |
 | `llms.txt`, `sitemap.xml`, `robots.txt` | Search and AI-crawler metadata |
 | `scripts/validate_site.py` | Run `python3 scripts/validate_site.py` before pushing: checks links, titles, descriptions, canonicals, JSON-LD |
 | `404.html` | Served by Pages for unmatched paths |
